@@ -92,10 +92,9 @@ class DateSuggest extends EditorSuggest<DateSuggestion> {
 	}
 
 	renderSuggestion(suggestion: DateSuggestion, el: HTMLElement): void {
-		const container = el.createDiv({ cls: "date-suggest-item" });
-		container.createSpan({ text: suggestion.label });
+		el.createSpan({ text: suggestion.label });
 		if (suggestion.description) {
-			container.createSpan({
+			el.createSpan({
 				cls: "date-suggest-hint",
 				text: suggestion.description,
 			});

@@ -1,18 +1,7 @@
-/* Date Suggest Dropdown Styles */
+/* Minimal override — let Obsidian handle the dropdown container & items */
 
-.date-suggest-item {
-	padding: 4px 6px;
-	font-size: var(--font-ui-small);
-	color: var(--text-normal);
-	cursor: pointer;
-}
-
-.date-suggest-item.is-selected {
-	background-color: var(--background-primary-alt);
-}
-
-.date-suggest-item .date-suggest-hint {
+.date-suggest-hint {
 	color: var(--text-muted);
 	font-size: var(--font-ui-smaller);
-	margin-left: 8px;
+	margin-left: var(--size-4-2);
 }
