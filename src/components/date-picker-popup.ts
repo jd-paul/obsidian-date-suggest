@@ -1,7 +1,5 @@
 import { App, Editor, EditorPosition } from "obsidian";
-
-const PLUGIN_ID = "date-suggest";
-const $ = (cls: string) => `${PLUGIN_ID}__${cls}`;
+import { $ } from "../utils";
 
 interface DatePickerPopupOptions {
 	app: App;

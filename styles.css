@@ -1,12 +1,12 @@
 /* Suggest hint text */
-.date-suggest-hint {
+.date-suggest__hint {
 	color: var(--text-muted);
 	font-size: var(--font-ui-smaller);
 	margin-left: var(--size-4-2);
 }
 
 /* Action item (View calendar) */
-.date-suggest-action {
+.date-suggest__action {
 	font-weight: var(--font-medium);
 }
 
