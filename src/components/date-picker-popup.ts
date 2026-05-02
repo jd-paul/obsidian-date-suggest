@@ -4,7 +4,8 @@ import { $ } from "../utils";
 interface DatePickerPopupOptions {
 	app: App;
 	editor: Editor;
-	insertPos: EditorPosition;
+	startPos: EditorPosition;
+	endPos: EditorPosition;
 	dateFormat: string;
 	insertAsLink: boolean;
 	onClose?: () => void;
@@ -13,7 +14,8 @@ interface DatePickerPopupOptions {
 export class DatePickerPopup {
 	private app: App;
 	private editor: Editor;
-	private insertPos: EditorPosition;
+	private startPos: EditorPosition;
+	private endPos: EditorPosition;
 	private dateFormat: string;
 	private insertAsLink: boolean;
 	private onClose?: () => void;
@@ -21,19 +23,23 @@ export class DatePickerPopup {
 	private popupEl: HTMLElement | null = null;
 	private cleanupFns: (() => void)[] = [];
 	private currentMonth: moment.Moment;
+	private selectedDate: moment.Moment;
+	private dayElements: { date: moment.Moment; el: HTMLElement }[] = [];
 
 	constructor(options: DatePickerPopupOptions) {
 		this.app = options.app;
 		this.editor = options.editor;
-		this.insertPos = options.insertPos;
+		this.startPos = options.startPos;
+		this.endPos = options.endPos;
 		this.dateFormat = options.dateFormat;
 		this.insertAsLink = options.insertAsLink;
 		this.onClose = options.onClose;
 		this.currentMonth = window.moment().startOf("month");
+		this.selectedDate = window.moment().startOf("day");
 	}
 
 	open(): void {
-		const cursorCoords = this.editor.coordsAtPos(this.insertPos);
+		const cursorCoords = this.editor.coordsAtPos(this.startPos);
 		if (!cursorCoords) {
 			this.destroy();
 			return;
@@ -54,6 +60,7 @@ export class DatePickerPopup {
 	private render(): void {
 		if (!this.popupEl) return;
 		this.popupEl.empty();
+		this.dayElements = [];
 
 		// Header
 		const header = this.popupEl.createDiv({ cls: $("header") });
@@ -100,11 +107,9 @@ export class DatePickerPopup {
 			const date = this.currentMonth.clone().date(day);
 			const dayEl = grid.createDiv({ cls: $("day"), text: String(day) });
 			if (date.isSame(today, "day")) dayEl.addClass("is-today");
+			this.dayElements.push({ date, el: dayEl });
 			dayEl.onclick = () => {
-				const formatted = date.format(this.dateFormat);
-				const insertValue = this.insertAsLink ? `[[${formatted}]]` : formatted;
-				this.editor.replaceRange(insertValue, this.insertPos, this.insertPos);
-				this.destroy();
+				this.selectDate(date);
 			};
 		}
 
@@ -113,6 +118,53 @@ export class DatePickerPopup {
 		for (let day = 1; day <= remainingCells; day++) {
 			grid.createDiv({ cls: `${$("day")} is-padding-day`, text: String(day) });
 		}
+
+		this.highlightSelectedDate();
+	}
+
+	private highlightSelectedDate(): void {
+		for (const { date, el } of this.dayElements) {
+			if (date.isSame(this.selectedDate, "day")) {
+				el.addClass("is-selected");
+			} else {
+				el.removeClass("is-selected");
+			}
+		}
+	}
+
+	private moveSelection(dir: "ArrowUp" | "ArrowDown" | "ArrowLeft" | "ArrowRight"): void {
+		let newDate = this.selectedDate.clone();
+
+		if (dir === "ArrowLeft") {
+			newDate.subtract(1, "day");
+		} else if (dir === "ArrowRight") {
+			newDate.add(1, "day");
+		} else if (dir === "ArrowUp") {
+			newDate.subtract(1, "week");
+		} else if (dir === "ArrowDown") {
+			newDate.add(1, "week");
+		}
+
+		if (!newDate.isSame(this.currentMonth, "month")) {
+			this.currentMonth = newDate.clone().startOf("month");
+			this.selectedDate = newDate;
+			this.render();
+		} else {
+			this.selectedDate = newDate;
+			this.highlightSelectedDate();
+		}
+	}
+
+	private selectDate(date: moment.Moment): void {
+		const formatted = date.format(this.dateFormat);
+		const insertValue = this.insertAsLink ? `[[${formatted}]]` : formatted;
+		this.editor.replaceRange(insertValue, this.startPos, this.endPos);
+		this.editor.setCursor({
+			line: this.startPos.line,
+			ch: this.startPos.ch + insertValue.length,
+		});
+		this.editor.focus();
+		this.destroy();
 	}
 
 	private attachCloseListeners(): void {
@@ -125,11 +177,30 @@ export class DatePickerPopup {
 		document.addEventListener("mousedown", clickHandler);
 		this.cleanupFns.push(() => document.removeEventListener("mousedown", clickHandler));
 
-		// Escape key
+		// Keyboard navigation & dismissal
 		const keyHandler = (evt: KeyboardEvent) => {
-			if (evt.key === "Escape") {
+			const hasModifiers = evt.ctrlKey || evt.metaKey || evt.altKey || evt.shiftKey;
+
+			if (!hasModifiers && evt.key === "Escape") {
+				evt.preventDefault();
 				this.destroy();
+				return;
 			}
+
+			if (!hasModifiers && evt.key === "Enter") {
+				evt.preventDefault();
+				this.selectDate(this.selectedDate);
+				return;
+			}
+
+			if (!hasModifiers && ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(evt.key)) {
+				evt.preventDefault();
+				this.moveSelection(evt.key as "ArrowUp" | "ArrowDown" | "ArrowLeft" | "ArrowRight");
+				return;
+			}
+
+			// Any other key closes the popup and passes through to the editor
+			this.destroy();
 		};
 		document.addEventListener("keydown", keyHandler);
 		this.cleanupFns.push(() => document.removeEventListener("keydown", keyHandler));

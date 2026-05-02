@@ -113,3 +113,16 @@
 .date-suggest__day.is-today:hover {
 	background-color: var(--background-modifier-hover);
 }
+
+.date-suggest__day.is-selected {
+	background-color: var(--interactive-accent);
+	color: var(--text-on-accent);
+}
+
+.date-suggest__day.is-selected:hover {
+	background-color: var(--interactive-accent-hover);
+}
+
+.date-suggest__day.is-selected.is-today {
+	border-color: var(--text-on-accent);
+}

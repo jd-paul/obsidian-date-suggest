@@ -1,6 +1,6 @@
 {
   "name": "obsidian-date-suggest",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Quick date insertion with @ trigger",
   "main": "main.js",
   "scripts": {

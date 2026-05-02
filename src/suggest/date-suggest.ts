@@ -93,7 +93,8 @@ export class DateSuggest extends EditorSuggest<DateSuggestion> {
 			this.activePopup = new DatePickerPopup({
 				app: this.app,
 				editor: context.editor,
-				insertPos: context.start,
+				startPos: context.start,
+				endPos: context.end,
 				dateFormat: this.plugin.settings.dateFormat,
 				insertAsLink: this.plugin.settings.insertAsLink,
 				onClose: () => {
@@ -107,5 +108,10 @@ export class DateSuggest extends EditorSuggest<DateSuggestion> {
 		const formatted = suggestion.date!.format(this.plugin.settings.dateFormat);
 		const insertValue = this.plugin.settings.insertAsLink ? `[[${formatted}]]` : formatted;
 		context.editor.replaceRange(insertValue, context.start, context.end);
+		context.editor.setCursor({
+			line: context.start.line,
+			ch: context.start.ch + insertValue.length,
+		});
+		context.editor.focus();
 	}
 }
