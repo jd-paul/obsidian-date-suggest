@@ -19,6 +19,7 @@
 	box-shadow: var(--shadow-s);
 	padding: var(--size-4-3);
 	width: 260px;
+	max-width: calc(100vw - var(--size-4-3, 12px) * 2);
 	font-family: var(--font-interface);
 }
 
@@ -98,11 +99,11 @@
 
 .date-suggest__day.is-padding-day {
 	color: var(--text-faint);
-	cursor: default;
+	cursor: pointer;
 }
 
 .date-suggest__day.is-padding-day:hover {
-	background-color: transparent;
+	background-color: var(--background-modifier-hover);
 }
 
 .date-suggest__day.is-today {
@@ -117,6 +118,7 @@
 .date-suggest__day.is-selected {
 	background-color: var(--interactive-accent);
 	color: var(--text-on-accent);
+	cursor: pointer;
 }
 
 .date-suggest__day.is-selected:hover {
