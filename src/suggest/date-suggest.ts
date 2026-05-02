@@ -11,6 +11,10 @@ import type DateSuggestPlugin from "../main";
 import { $ } from "../utils";
 import { DatePickerPopup } from "../components/date-picker-popup";
 
+interface EditorWithCm extends Editor {
+	cm?: { composing?: boolean };
+}
+
 export interface DateSuggestion {
 	label: string;
 	description?: string;
@@ -69,7 +73,7 @@ export class DateSuggest extends EditorSuggest<DateSuggestion> {
 		editor: Editor,
 		file: TFile
 	): EditorSuggestTriggerInfo | null {
-		if ((editor as any).cm?.composing) return null;
+		if ((editor as EditorWithCm).cm?.composing) return null;
 
 		const trigger = this.plugin.settings.triggerPhrase;
 		const range = editor.getRange({ line: cursor.line, ch: 0 }, cursor);

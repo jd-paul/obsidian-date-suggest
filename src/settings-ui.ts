@@ -13,8 +13,6 @@ export class DateSuggestSettingTab extends PluginSettingTab {
 		const { containerEl } = this;
 		containerEl.empty();
 
-		new Setting(containerEl).setName("General").setHeading();
-
 		new Setting(containerEl)
 			.setName("Date format")
 			.setDesc("Moment.js format string for inserted dates")

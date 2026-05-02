@@ -13,6 +13,8 @@
 /* ── Inline Calendar Popup ── */
 
 .date-suggest__popup {
+	position: fixed;
+	z-index: 1000;
 	background-color: var(--background-primary);
 	border: 1px solid var(--background-modifier-border);
 	border-radius: var(--radius-m);

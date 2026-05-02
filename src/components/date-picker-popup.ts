@@ -1,6 +1,10 @@
 import { App, Editor, EditorPosition } from "obsidian";
 import { $ } from "../utils";
 
+interface EditorWithCoords extends Editor {
+	coordsAtPos(pos: EditorPosition): { left: number; top: number; bottom: number; right: number } | null;
+}
+
 interface DatePickerPopupOptions {
 	app: App;
 	editor: Editor;
@@ -57,7 +61,7 @@ export class DatePickerPopup {
 	}
 
 	open(): void {
-		const cursorCoords = (this.editor as any).coordsAtPos(this.startPos);
+		const cursorCoords = (this.editor as EditorWithCoords).coordsAtPos(this.startPos);
 		if (!cursorCoords) {
 			this.destroy();
 			return;
@@ -81,10 +85,8 @@ export class DatePickerPopup {
 		this.popupEl.addClass($("popup"));
 		this.popupEl.setAttribute("role", "dialog");
 		this.popupEl.setAttribute("aria-label", "Date picker");
-		this.popupEl.style.position = "fixed";
 		this.popupEl.style.left = `${left}px`;
 		this.popupEl.style.top = `${top}px`;
-		this.popupEl.style.zIndex = "1000";
 		document.body.appendChild(this.popupEl);
 
 		this.render();
