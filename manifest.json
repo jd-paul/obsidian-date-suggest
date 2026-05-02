@@ -1,0 +1,11 @@
+{
+	"id": "obsidian-date-suggest",
+	"name": "Date Suggest",
+	"version": "0.1.0",
+	"minAppVersion": "1.0.0",
+	"description": "Quick date insertion with @ trigger",
+	"author": "jd-paul",
+	"authorUrl": "https://github.com/jd-paul",
+	"fundingUrl": "",
+	"isDesktopOnly": false
+}

@@ -1,0 +1,12 @@
+# Dependencies
+node_modules/
+
+# macOS
+.DS_Store
+
+# Compiled output (rebuild with `npm run build`)
+main.js
+*.js.map
+
+# Obsidian runtime data
+data.json
