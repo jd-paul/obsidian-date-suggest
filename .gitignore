@@ -10,3 +10,6 @@ main.js
 
 # Obsidian runtime data
 data.json
+
+# Internal docs
+coding_standards.md

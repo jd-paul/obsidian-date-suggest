@@ -14,10 +14,14 @@
   "author": "jd-paul",
   "license": "MIT",
   "devDependencies": {
+    "@types/flatpickr": "^3.0.2",
     "@types/node": "^20.0.0",
     "esbuild": "^0.20.0",
     "obsidian": "latest",
     "tslib": "^2.6.0",
     "typescript": "^5.3.0"
+  },
+  "dependencies": {
+    "flatpickr": "^4.6.13"
   }
 }

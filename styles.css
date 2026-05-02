@@ -1,7 +1,115 @@
-/* Minimal override — let Obsidian handle the dropdown container & items */
-
+/* Suggest hint text */
 .date-suggest-hint {
 	color: var(--text-muted);
 	font-size: var(--font-ui-smaller);
 	margin-left: var(--size-4-2);
+}
+
+/* Action item (View calendar) */
+.date-suggest-action {
+	font-weight: var(--font-medium);
+}
+
+/* ── Inline Calendar Popup ── */
+
+.date-suggest__popup {
+	background-color: var(--background-primary);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: var(--radius-m);
+	box-shadow: var(--shadow-s);
+	padding: var(--size-4-3);
+	width: 260px;
+	font-family: var(--font-interface);
+}
+
+.date-suggest__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: var(--size-4-2);
+}
+
+.date-suggest__nav {
+	background: transparent;
+	border: none;
+	color: var(--text-normal);
+	font-size: var(--font-ui-large);
+	cursor: pointer;
+	padding: var(--size-2-1) var(--size-4-1);
+	border-radius: var(--radius-s);
+	line-height: 1;
+	width: 32px;
+	height: 32px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.date-suggest__nav:hover {
+	background-color: var(--background-modifier-hover);
+}
+
+.date-suggest__title {
+	font-size: var(--font-ui-medium);
+	font-weight: var(--font-semibold);
+	color: var(--text-normal);
+	text-align: center;
+	flex: 1;
+}
+
+.date-suggest__weekdays {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	gap: 2px;
+	margin-bottom: var(--size-2-2);
+}
+
+.date-suggest__weekday {
+	text-align: center;
+	font-size: var(--font-ui-smaller);
+	color: var(--text-muted);
+	padding: var(--size-2-1);
+	font-weight: var(--font-medium);
+}
+
+.date-suggest__grid {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	gap: 2px;
+}
+
+.date-suggest__day {
+	aspect-ratio: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: var(--font-ui-small);
+	color: var(--text-normal);
+	cursor: pointer;
+	border-radius: var(--radius-s);
+	padding: var(--size-2-1);
+	border: 1px solid transparent;
+	transition: background-color 0.1s ease;
+}
+
+.date-suggest__day:hover {
+	background-color: var(--background-modifier-hover);
+}
+
+.date-suggest__day.is-padding-day {
+	color: var(--text-faint);
+	cursor: default;
+}
+
+.date-suggest__day.is-padding-day:hover {
+	background-color: transparent;
+}
+
+.date-suggest__day.is-today {
+	border-color: var(--interactive-accent);
+	color: var(--interactive-accent);
+}
+
+.date-suggest__day.is-today:hover {
+	background-color: var(--background-modifier-hover);
 }
