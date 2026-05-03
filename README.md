@@ -2,6 +2,8 @@
 
 Quickly insert dates in Obsidian using an `@` trigger — no more typing out today's date by hand.
 
+<img width="1920" height="1032" alt="Recording 2026-05-03 083652" src="https://github.com/user-attachments/assets/9de1fb36-7e63-47ac-a91d-3362e19b3e72" />
+
 ## Features
 
 - **Type `@`** (or your custom trigger) anywhere in a note to open the date suggester
